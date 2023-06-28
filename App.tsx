@@ -1,20 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
 
-export default function App() {
+import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider as PaperProvider } from "react-native-paper";
+import { Dimensions } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+//theme
+import { Header, Icon } from "@rneui/base";
+
+const screenWidth = Dimensions.get("window").width;
+
+import Balance from "./components/Balance";
+import Detail from "./components/Details";
+
+type RootStackParamList = {
+  Balance: undefined;
+
+  Detail: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+const Mycomponent: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    <NavigationContainer>
+      <SafeAreaProvider>
+        <Header
+          barStyle="default"
+          centerComponent={{
+            text: "MY LOAN",
+            style: { color: "#fff" },
+          }}
+          containerStyle={{ width: screenWidth }}
+          leftComponent={{ icon: "menu", color: "#fff" }}
+          leftContainerStyle={{}}
+          linearGradientProps={{}}
+          placement="center"
+          rightComponent={{ icon: "home", color: "#fff" }}
+        />
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Balance"
+            component={Balance}
+            options={{ headerStyle: { backgroundColor: "red" } }}
+          />
+          <Stack.Screen name="Detail" component={Detail} />
+        </Stack.Navigator>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+        {/* <PaperProvider><Detail /></PaperProvider> */}
+      </SafeAreaProvider>
+    </NavigationContainer>
+  );
+};
+
+export default Mycomponent;
