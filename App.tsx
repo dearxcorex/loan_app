@@ -5,26 +5,23 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from "react-native-paper";
 import { Dimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+
 //theme
 import { Header, Icon } from "@rneui/base";
 
 const screenWidth = Dimensions.get("window").width;
 
 import Balance from "./components/Balance";
-import Detail from "./components/Details";
-
-type RootStackParamList = {
-  Balance: undefined;
-
-  Detail: undefined;
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+// import Detail from "./components/Details";
+import DetailsScreen from "./components/Details";
+import CreateButtonAdd from "./components/Addbutton/CreateButtonAdd";
+import InputPage from "./components/Addbutton/inputPage";
+const Stack = createStackNavigator();
 
 const Mycomponent: React.FC = () => {
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
+    <PaperProvider>
+      <NavigationContainer>
         <Header
           barStyle="default"
           centerComponent={{
@@ -38,18 +35,20 @@ const Mycomponent: React.FC = () => {
           placement="center"
           rightComponent={{ icon: "home", color: "#fff" }}
         />
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Balance">
           <Stack.Screen
             name="Balance"
             component={Balance}
             options={{ headerStyle: { backgroundColor: "red" } }}
           />
-          <Stack.Screen name="Detail" component={Detail} />
+          <Stack.Screen name="Details" component={DetailsScreen} />
+          <Stack.Screen name="CreateButton" component={CreateButtonAdd} />
+          <Stack.Screen name="inputPage" component={InputPage} />
         </Stack.Navigator>
 
-        {/* <PaperProvider><Detail /></PaperProvider> */}
-      </SafeAreaProvider>
-    </NavigationContainer>
+        <CreateButtonAdd />
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 

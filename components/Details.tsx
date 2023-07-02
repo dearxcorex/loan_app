@@ -7,7 +7,7 @@ interface Item {
   loan: number;
 }
 
-const Detail = () => {
+const Details = () => {
   const [page, setPage] = useState<number>(0);
   const [numberOfItemsPerPageList] = useState<number[]>([2, 3, 4]);
   const [itemsPerPage, onItemsPerPageChange] = useState<number>(
@@ -72,4 +72,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default Details;
