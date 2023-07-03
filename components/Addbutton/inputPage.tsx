@@ -4,14 +4,20 @@ import { View, StyleSheet, Platform } from "react-native";
 import Constants from "expo-constants";
 import { DatePickerInput } from "react-native-paper-dates";
 import { Button } from "react-native-paper";
-
+import { StackNavigationProp } from "@react-navigation/stack";
 //firebase
 import firestore from "../../firebase";
 // import { getFirestore, doc, setDoc, Timestamp } from "firebase/firestore";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { enGB, registerTranslation } from "react-native-paper-dates";
-
+import { ActivityIndicator } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 //add data to firebaestore
+type RootStackParamList = {
+  Balance: undefined;
+};
+
+type AddScreenProp = StackNavigationProp<RootStackParamList, "Balance">;
 const addDataTofirebaestore = async (
   name: string,
   amount: number,
@@ -24,11 +30,29 @@ const addDataTofirebaestore = async (
     date: Timestamp.fromDate(date),
   });
 };
-const CreateInput = () => {
+
+const CreateInput: React.FC = () => {
   registerTranslation("en-GB", enGB);
   const [name, setName] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const [inputDate, setInputDate] = React.useState<Date | undefined>(undefined);
+  const [loading, setLoading] = React.useState(false);
+  const navigation = useNavigation<AddScreenProp>();
+
+  const onSubmit = () => {
+    if (name && amount && inputDate) {
+      setLoading(true);
+      addDataTofirebaestore(name, Number(amount), inputDate)
+        .then(() => {
+          setLoading(false);
+          navigation.navigate("Balance");
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.log(error);
+        });
+    }
+  };
   return (
     <View style={styles.container}>
       <TextInput
@@ -54,24 +78,21 @@ const CreateInput = () => {
         style={styles.DatePickerInput}
       />
 
-      <Button
-        mode="contained"
-        onPress={() => {
-          if (inputDate !== undefined) {
-            addDataTofirebaestore(name, Number(amount), inputDate);
-          } else {
-            console.log("inputDate is undefined");
-          }
-        }} //add data to firestore
-        style={{
-          width: 100,
-          height: 50,
-
-          alignSelf: "center",
-        }}
-      >
-        create
-      </Button>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <Button
+          mode="contained"
+          onPress={onSubmit}
+          style={{
+            width: 100,
+            height: 50,
+            alignSelf: "center",
+          }}
+        >
+          create
+        </Button>
+      )}
     </View>
   );
 };

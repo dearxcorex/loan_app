@@ -10,9 +10,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Header, Icon } from "@rneui/base";
 
 const screenWidth = Dimensions.get("window").width;
-
+import UserLogin from "./components/UserLogin";
 import Balance from "./components/Balance";
-// import Detail from "./components/Details";
 import DetailsScreen from "./components/Details";
 import CreateButtonAdd from "./components/Addbutton/CreateButtonAdd";
 import InputPage from "./components/Addbutton/inputPage";
@@ -35,15 +34,17 @@ const Mycomponent: React.FC = () => {
           placement="center"
           rightComponent={{ icon: "home", color: "#fff" }}
         />
-        <Stack.Navigator initialRouteName="Balance">
-          <Stack.Screen
+
+        <Stack.Navigator>
+          <Stack.Screen name="Userlogin" component={UserLogin} />
+          {/* <Stack.Screen
             name="Balance"
             component={Balance}
             options={{ headerStyle: { backgroundColor: "red" } }}
           />
           <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="CreateButton" component={CreateButtonAdd} />
-          <Stack.Screen name="inputPage" component={InputPage} />
+          <Stack.Screen name="inputPage" component={InputPage} /> */}
         </Stack.Navigator>
 
         <CreateButtonAdd />

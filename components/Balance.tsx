@@ -2,7 +2,7 @@ import React from "react";
 // import { Text, Stack, Box } from "@react-native-material/core";
 import { Card, Text } from "react-native-paper";
 import { HStack } from "@react-native-material/core";
-import Details from "./Details";
+
 import { Dimensions, TouchableOpacity } from "react-native";
 //route
 import {
