@@ -5,8 +5,7 @@ import { TextInput, Button } from "react-native-paper";
 //firebase
 import firestore from "../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-// import { getFirestore, doc, setDoc, Timestamp } from "firebase/firestore";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+
 const Userlogin: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
