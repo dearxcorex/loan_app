@@ -37,14 +37,14 @@ const Mycomponent: React.FC = () => {
 
         <Stack.Navigator>
           <Stack.Screen name="Userlogin" component={UserLogin} />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Balance"
             component={Balance}
             options={{ headerStyle: { backgroundColor: "red" } }}
           />
-          <Stack.Screen name="Details" component={DetailsScreen} />
+          {/* <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="CreateButton" component={CreateButtonAdd} />
-          <Stack.Screen name="inputPage" component={InputPage} /> */}
+          <Stack.Screen name="inputPage" component={InputPage} />  */}
         </Stack.Navigator>
 
         <CreateButtonAdd />
