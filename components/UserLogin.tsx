@@ -1,16 +1,14 @@
-import firebase from "../firebase";
+import { app } from "../firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 
 //firebase
-
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   CompositeNavigationProp,
   useNavigation,
 } from "@react-navigation/native";
-
 import { StackNavigationProp } from "@react-navigation/stack";
 
 type RootStackParamList = {
@@ -28,14 +26,14 @@ const Userlogin: React.FC<AppProps> = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const onSubmit = async () => {
-    const firebaseApp = getAuth();
+    const firebaseApp = getAuth(app);
     await signInWithEmailAndPassword(firebaseApp, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
         console.log(user);
         if (user) {
-          navigation.navigate("Balance");
+          navigation.reset({ index: 0, routes: [{ name: "Balance" }] });
         }
       })
       .catch((error) => {

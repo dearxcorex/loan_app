@@ -42,9 +42,9 @@ const Mycomponent: React.FC = () => {
             component={Balance}
             options={{ headerStyle: { backgroundColor: "red" } }}
           />
-          {/* <Stack.Screen name="Details" component={DetailsScreen} />
+          <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="CreateButton" component={CreateButtonAdd} />
-          <Stack.Screen name="inputPage" component={InputPage} />  */}
+          <Stack.Screen name="inputPage" component={InputPage} />
         </Stack.Navigator>
 
         <CreateButtonAdd />

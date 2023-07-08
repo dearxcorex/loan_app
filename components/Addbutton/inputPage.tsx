@@ -5,9 +5,10 @@ import Constants from "expo-constants";
 import { DatePickerInput } from "react-native-paper-dates";
 import { Button } from "react-native-paper";
 import { StackNavigationProp } from "@react-navigation/stack";
-//firebase
-import firestore from "../../firebase";
-// import { getFirestore, doc, setDoc, Timestamp } from "firebase/firestore";
+//firebase and Auth
+import { firestore, app } from "../../firebase";
+import { getAuth } from "firebase/auth";
+
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import { ActivityIndicator } from "react-native";
@@ -24,11 +25,20 @@ const addDataTofirebaestore = async (
   date: Date
 ) => {
   const loansRef = collection(firestore, "loans");
-  await addDoc(loansRef, {
-    name: name,
-    amount: amount,
-    date: Timestamp.fromDate(date),
-  });
+  const user = getAuth(app).currentUser;
+
+  if (user) {
+    {
+      await addDoc(loansRef, {
+        name: name,
+        amount: amount,
+        date: Timestamp.fromDate(date),
+        userId: user.uid,
+      });
+    }
+  } else {
+    console.log("user is not logged in");
+  }
 };
 
 const CreateInput: React.FC = () => {
