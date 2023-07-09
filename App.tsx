@@ -21,6 +21,24 @@ const screenWidth = Dimensions.get("window").width;
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+const HeaderStyle: React.FC = () => {
+  return (
+    <Header
+      barStyle="default"
+      centerComponent={{
+        text: "MY LOAN",
+        style: { color: "#fff" },
+      }}
+      containerStyle={{ width: screenWidth }}
+      leftComponent={{ icon: "menu", color: "#fff" }}
+      leftContainerStyle={{}}
+      linearGradientProps={{}}
+      placement="center"
+      rightComponent={{ icon: "home", color: "#fff" }}
+    />
+  );
+};
+
 //route
 const StackNavigator: React.FC = () => {
   return (
@@ -29,22 +47,7 @@ const StackNavigator: React.FC = () => {
         name="Balance"
         component={Balance}
         options={{
-          header: () => (
-            <Header
-              barStyle="default"
-              centerComponent={{
-                text: "MY LOAN",
-                style: { color: "#fff" },
-              }}
-              containerStyle={{ width: screenWidth }}
-              leftComponent={{ icon: "menu", color: "#fff" }}
-              leftContainerStyle={{}}
-              linearGradientProps={{}}
-              placement="center"
-              rightComponent={{ icon: "home", color: "#fff" }}
-            />
-          ),
-          headerStyle: { backgroundColor: "red" },
+          header: () => <HeaderStyle />, // use it as a custom header
         }}
       />
       <Stack.Screen name="Details" component={DetailsScreen} />
@@ -54,14 +57,14 @@ const StackNavigator: React.FC = () => {
 };
 
 //menu bar
-const DrawerNavigator: React.FC = () => {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={StackNavigator} />
-      <Drawer.Screen name="add" component={CreateButtonAdd} />
-    </Drawer.Navigator>
-  );
-};
+// const DrawerNavigator: React.FC = () => {
+//   return (
+//     <Drawer.Navigator>
+//       <Drawer.Screen name="Home" component={StackNavigator} />
+//       <Drawer.Screen name="add" component={CreateButtonAdd} />
+//     </Drawer.Navigator>
+//   );
+// };
 
 const Mycomponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -71,7 +74,11 @@ const Mycomponent: React.FC = () => {
       <NavigationContainer>
         <Stack.Navigator>
           {isLogin ? (
-            <Stack.Screen name="Balance" component={Balance} />
+            <Stack.Screen
+              name="x"
+              component={StackNavigator}
+              options={{ headerShown: false }}
+            />
           ) : (
             <Stack.Screen name="Userlogin">
               {(props) => <UserLogin {...props} setIslogin={setIsLogin} />}
