@@ -3,25 +3,19 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
-
-//firebase
-import {
-  CompositeNavigationProp,
-  useNavigation,
-} from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 type RootStackParamList = {
   Balance: undefined;
 };
-
 type navigationProp = StackNavigationProp<RootStackParamList, "Balance">;
-
 interface AppProps {
   navigation: navigationProp;
+  setIslogin: (value: boolean) => void;
 }
-
-const Userlogin: React.FC<AppProps> = ({ navigation }) => {
+const Userlogin: React.FC<AppProps> = ({ navigation, setIslogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -33,6 +27,8 @@ const Userlogin: React.FC<AppProps> = ({ navigation }) => {
         const user = userCredential.user;
         console.log(user);
         if (user) {
+          console.log("user is logged in");
+          setIslogin(true);
           navigation.reset({ index: 0, routes: [{ name: "Balance" }] });
         }
       })
@@ -42,6 +38,7 @@ const Userlogin: React.FC<AppProps> = ({ navigation }) => {
         console.log(errorCode, errorMessage);
       });
   };
+
   return (
     <View>
       <TextInput
@@ -54,9 +51,8 @@ const Userlogin: React.FC<AppProps> = ({ navigation }) => {
         value={password}
         onChangeText={(password) => setPassword(password)}
       />
-
       <Button mode="contained" onPress={onSubmit}>
-        click me
+        Login
       </Button>
     </View>
   );

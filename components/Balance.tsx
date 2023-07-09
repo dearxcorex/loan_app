@@ -3,6 +3,7 @@ import React from "react";
 import { Card, Text } from "react-native-paper";
 import { HStack } from "@react-native-material/core";
 
+const screenWidth = Dimensions.get("window").width;
 import { Dimensions, TouchableOpacity } from "react-native";
 //route
 import {
@@ -30,16 +31,18 @@ const Balance: React.FC = () => {
     navigation.navigate("Details");
   };
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <HStack m={4} spacing={3}>
-        <Card style={{ width: width * 0.4, height: height * 0.15 }}>
-          <Card.Content>
-            <Text variant="titleLarge">Dearxoasis!!</Text>
-            <Text variant="bodyMedium">$5680.00</Text>
-          </Card.Content>
-        </Card>
-      </HStack>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity onPress={handlePress}>
+        <HStack m={4} spacing={3}>
+          <Card style={{ width: width * 0.4, height: height * 0.15 }}>
+            <Card.Content>
+              <Text variant="titleLarge">Dearxoasis!!</Text>
+              <Text variant="bodyMedium">$5680.00</Text>
+            </Card.Content>
+          </Card>
+        </HStack>
+      </TouchableOpacity>
+    </>
   );
 };
 export default Balance;
