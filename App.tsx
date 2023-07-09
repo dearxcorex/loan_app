@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from "react-native-paper";
 import { Dimensions } from "react-native";
@@ -15,47 +14,18 @@ import InputPage from "./components/Addbutton/inputPage";
 
 //menu bar
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerActions } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DrawerActions,
+  useNavigation,
+} from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
-const HeaderStyle: React.FC = () => {
-  return (
-    <Header
-      barStyle="default"
-      centerComponent={{
-        text: "MY LOAN",
-        style: { color: "#fff" },
-      }}
-      containerStyle={{ width: screenWidth }}
-      leftComponent={{ icon: "menu", color: "#fff" }}
-      leftContainerStyle={{}}
-      linearGradientProps={{}}
-      placement="center"
-      rightComponent={{ icon: "home", color: "#fff" }}
-    />
-  );
-};
-
-//route
-const StackNavigator: React.FC = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Balance"
-        component={Balance}
-        options={{
-          header: () => <HeaderStyle />, // use it as a custom header
-        }}
-      />
-      <Stack.Screen name="Details" component={DetailsScreen} />
-      <Stack.Screen name="inputPage" component={InputPage} />
-    </Stack.Navigator>
-  );
-};
-
+interface HeaderStyleProps {
+  navigation: any; // You may want to replace 'any' with the correct type
+}
 //menu bar
 // const DrawerNavigator: React.FC = () => {
 //   return (
@@ -65,6 +35,57 @@ const StackNavigator: React.FC = () => {
 //     </Drawer.Navigator>
 //   );
 // };
+
+const HomeScreen: React.FC = () => {
+  console.log("HomeScreen");
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Home Screen!!</Text>
+    </View>
+  );
+};
+
+const HeaderStyle: React.FC<HeaderStyleProps> = ({ navigation }) => {
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
+  return (
+    <Header
+      barStyle="default"
+      centerComponent={{
+        text: "MY LOAN",
+        style: { color: "#fff" },
+      }}
+      containerStyle={{ width: screenWidth }}
+      leftComponent={{
+        icon: "menu",
+        color: "#fff",
+        onPress: openDrawer,
+      }}
+      leftContainerStyle={{}}
+      linearGradientProps={{}}
+      placement="center"
+      rightComponent={{ icon: "home", color: "#fff" }}
+    />
+  );
+};
+
+//route
+const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Balance"
+        component={Balance}
+        options={{
+          header: () => <HeaderStyle navigation={navigation} />, // use it as a custom header
+        }}
+      />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="inputPage" component={InputPage} />
+    </Stack.Navigator>
+  );
+};
 
 const Mycomponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
