@@ -1,26 +1,25 @@
-import React from "react";
-// import { Text, Stack, Box } from "@react-native-material/core";
+import React, { useContext } from "react";
 import { Card, Text } from "react-native-paper";
 import { HStack } from "@react-native-material/core";
-
-const screenWidth = Dimensions.get("window").width;
 import { Dimensions, TouchableOpacity } from "react-native";
-//route
 import {
   CompositeNavigationProp,
   useNavigation,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { BalanceContext } from "./AuthContext/BalanceContext";
 
+const screenWidth = Dimensions.get("window").width;
 const { width, height } = Dimensions.get("window");
 
 type RootStackParamList = {
   Balance: undefined;
-
   Details: undefined;
 };
 
 const Balance: React.FC = () => {
+  const context = useContext(BalanceContext);
+  if (!context) throw new Error("BalanceContext is undefined");
   type HomeScreenProp = CompositeNavigationProp<
     StackNavigationProp<RootStackParamList, "Balance">,
     StackNavigationProp<RootStackParamList, "Details">
@@ -30,6 +29,7 @@ const Balance: React.FC = () => {
   const handlePress = () => {
     navigation.navigate("Details");
   };
+
   return (
     <>
       <TouchableOpacity onPress={handlePress}>
@@ -37,7 +37,7 @@ const Balance: React.FC = () => {
           <Card style={{ width: width * 0.4, height: height * 0.15 }}>
             <Card.Content>
               <Text variant="titleLarge">Dearxoasis!!</Text>
-              <Text variant="bodyMedium">$5680.00</Text>
+              <Text variant="bodyMedium">${context.totalLoan}</Text>
             </Card.Content>
           </Card>
         </HStack>
@@ -45,4 +45,5 @@ const Balance: React.FC = () => {
     </>
   );
 };
+
 export default Balance;

@@ -1,4 +1,8 @@
 import { useState } from "react";
+import {
+  BalanceContext,
+  BalanceContextProps,
+} from "./components/AuthContext/BalanceContext";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Provider as PaperProvider } from "react-native-paper";
@@ -95,29 +99,22 @@ const styles = StyleSheet.create({
 
 //route
 const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
+  const [totalLoan, setTotalLoan] = useState(0);
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Balance"
-        component={Balance}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="Details" component={DetailsScreen} />
-      <Stack.Screen name="InputPage" component={InputPage} />
-    </Stack.Navigator>
+    <BalanceContext.Provider value={{ totalLoan, setTotalLoan }}>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Balance"
+          component={Balance}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="InputPage" component={InputPage} />
+      </Stack.Navigator>
+    </BalanceContext.Provider>
   );
 };
 
-// const styles = StyleSheet.create({
-//   drawer: {
-//     backgroundColor: '#f0f0f0',
-//     width: 200, // Customize the width of the drawer
-//   },
-//   drawerContent: {
-//     flex: 1,
-//     paddingVertical: 20,
-//   },
-// });
 const Mycomponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
 
