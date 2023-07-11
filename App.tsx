@@ -42,14 +42,13 @@ interface HeaderStyleProps {
   navigation: (value: string) => void;
 }
 
-const handleAddPress = () => {
-  const navigation = useNavigation<InputPageNavigationProp>();
-  navigation.navigate("InputPage");
-};
 const DrawerContent: React.FC<DrawerContentComponentProps> = () => {
-  // const handleAddPress = (navigation: any) => {
-  //   navigation.navigate("InputPage");
-  // };
+  const navigation = useNavigation<InputPageNavigationProp>();
+
+  const handleAddPress = () => {
+    navigation.navigate("InputPage");
+  };
+
   console.log("DrawerComponent");
   return (
     <View>
@@ -104,7 +103,7 @@ const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Details" component={DetailsScreen} />
-      <Stack.Screen name="inputPage" component={InputPage} />
+      <Stack.Screen name="InputPage" component={InputPage} />
     </Stack.Navigator>
   );
 };
