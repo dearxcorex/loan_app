@@ -3,17 +3,15 @@ import {
   BalanceContext,
   BalanceContextProps,
 } from "./components/AuthContext/BalanceContext";
-import { StyleSheet, Text, View } from "react-native";
-
+import { StyleSheet, View } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import { Dimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button } from "react-native-paper";
 import UserLogin from "./components/UserLogin";
+import { signOut, getAuth } from "firebase/auth";
 import Balance from "./components/Balance";
 import DetailsScreen from "./components/Details";
-import CreateButtonAdd from "./components/Addbutton/CreateButtonAdd";
 import InputPage from "./components/Addbutton/inputPage";
 import {
   DrawerContentComponentProps,
@@ -21,13 +19,13 @@ import {
 } from "@react-navigation/drawer";
 import { Drawer } from "react-native-paper";
 
-//menu bar
-
 import {
   CompositeNavigationProp,
   NavigationContainer,
   useNavigation,
+  CommonActions,
 } from "@react-navigation/native";
+import { set } from "react-native-reanimated";
 
 const screenWidth = Dimensions.get("window").width;
 const Stack = createStackNavigator();
@@ -35,6 +33,7 @@ const DrawerNavigator = createDrawerNavigator();
 
 type RootStackParamList = {
   InputPage: undefined;
+  Userlogin: undefined;
 };
 
 type InputPageNavigationProp = StackNavigationProp<
@@ -53,6 +52,14 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = () => {
     navigation.navigate("InputPage");
   };
 
+  const handleLogoutPress = async () => {
+    const [isLogin, setIsLogin] = useState(false);
+    await signOut(getAuth());
+    setIsLogin(false);
+
+    navigation.reset({ index: 0, routes: [{ name: "Userlogin" }] });
+  };
+
   console.log("DrawerComponent");
   return (
     <View>
@@ -62,12 +69,14 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = () => {
         label="Add"
         onPress={handleAddPress}
       />
+      <Drawer.Item icon="star" label="Logout" onPress={handleLogoutPress} />
     </View>
   );
 };
 
-// style drawer content
-const MyDrawer = () => {
+const MyDrawer: React.FC = () => {
+  const navigation = useNavigation();
+
   return (
     <DrawerNavigator.Navigator
       drawerContent={(props) => (
@@ -85,11 +94,10 @@ const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
     paddingVertical: 30,
-
     width: screenWidth * 0.7,
-    marginTop: 50, // Adjust the marginTop value as needed
-    marginBottom: 5, // Adjust the marginBottom value as needed
-    marginRight: 5, // Adjust the ma
+    marginTop: 50,
+    marginBottom: 5,
+    marginRight: 5,
   },
   drawernavigator: {
     flex: 1,
@@ -97,8 +105,8 @@ const styles = StyleSheet.create({
   },
 });
 
-//route
 const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
+  const [isLogin, setIsLogin] = useState(false);
   const [totalLoan, setTotalLoan] = useState(0);
   const [userName, setUserName] = useState<string>("");
   return (
@@ -109,6 +117,9 @@ const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
           component={Balance}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Userlogin">
+          {(props) => <UserLogin {...props} setIslogin={setIsLogin} />}
+        </Stack.Screen>
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="InputPage" component={InputPage} />
       </Stack.Navigator>

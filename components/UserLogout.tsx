@@ -1,4 +1,3 @@
-// UserLogout.tsx
 import { app } from "../firebase";
 import { signOut, getAuth } from "firebase/auth";
 import { StackNavigationProp } from "@react-navigation/stack";
