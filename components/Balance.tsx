@@ -36,7 +36,7 @@ const Balance: React.FC = () => {
         <HStack m={4} spacing={3}>
           <Card style={{ width: width * 0.4, height: height * 0.15 }}>
             <Card.Content>
-              <Text variant="titleLarge">Dearxoasis!!</Text>
+              <Text variant="titleLarge">dearxoasis</Text>
               <Text variant="bodyMedium">${context.totalLoan}</Text>
             </Card.Content>
           </Card>

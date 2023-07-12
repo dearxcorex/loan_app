@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
 //route
 const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
   const [totalLoan, setTotalLoan] = useState(0);
+  const [userName, setUserName] = useState<string>("");
   return (
     <BalanceContext.Provider value={{ totalLoan, setTotalLoan }}>
       <Stack.Navigator>
