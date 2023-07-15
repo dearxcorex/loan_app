@@ -53,10 +53,7 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = () => {
   };
 
   const handleLogoutPress = async () => {
-    const [isLogin, setIsLogin] = useState(false);
     await signOut(getAuth());
-    setIsLogin(false);
-
     navigation.reset({ index: 0, routes: [{ name: "Userlogin" }] });
   };
 
