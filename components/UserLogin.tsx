@@ -7,15 +7,17 @@ import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
+import { useAuth } from "./AuthContext/SetupContext";
+
 type RootStackParamList = {
   Balance: undefined;
+  Home_2: undefined;
 };
 type navigationProp = StackNavigationProp<RootStackParamList, "Balance">;
-interface AppProps {
-  navigation: navigationProp;
-  setIslogin: (value: boolean) => void;
-}
-const Userlogin: React.FC<AppProps> = ({ navigation, setIslogin }) => {
+
+const Userlogin: React.FC = () => {
+  const { signIn } = useAuth();
+  const navigation = useNavigation<navigationProp>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,8 +30,9 @@ const Userlogin: React.FC<AppProps> = ({ navigation, setIslogin }) => {
         console.log(user);
         if (user) {
           console.log("user is logged in");
-          setIslogin(true);
-          navigation.reset({ index: 0, routes: [{ name: "Balance" }] });
+
+          signIn();
+          navigation.reset({ index: 0, routes: [{ name: "Home_2" }] });
         }
       })
       .catch((error) => {

@@ -25,7 +25,8 @@ import {
   useNavigation,
   CommonActions,
 } from "@react-navigation/native";
-import { set } from "react-native-reanimated";
+
+import { useAuth } from "./components/AuthContext/SetupContext";
 
 const screenWidth = Dimensions.get("window").width;
 const Stack = createStackNavigator();
@@ -102,10 +103,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
-  const [isLogin, setIsLogin] = useState(false);
+const StackNavigator: React.FC<HeaderStyleProps> = () => {
   const [totalLoan, setTotalLoan] = useState(0);
-  const [userName, setUserName] = useState<string>("");
+
   return (
     <BalanceContext.Provider value={{ totalLoan, setTotalLoan }}>
       <Stack.Navigator>
@@ -114,9 +114,7 @@ const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
           component={Balance}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Userlogin">
-          {(props) => <UserLogin {...props} setIslogin={setIsLogin} />}
-        </Stack.Screen>
+
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="InputPage" component={InputPage} />
       </Stack.Navigator>
@@ -125,25 +123,23 @@ const StackNavigator: React.FC<HeaderStyleProps> = ({ navigation }) => {
 };
 
 const Mycomponent: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(false);
-
+  const { isSigedIn } = useAuth();
   return (
     <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          {isLogin ? (
-            <Stack.Screen
-              name="Home_2"
-              component={MyDrawer}
-              options={{
-                headerShown: false,
-              }}
-            />
-          ) : (
-            <Stack.Screen name="Userlogin">
-              {(props) => <UserLogin {...props} setIslogin={setIsLogin} />}
-            </Stack.Screen>
-          )}
+          <Stack.Screen
+            name="Userlogin"
+            component={UserLogin}
+            options={{ headerShown: !isSigedIn }} // Hide header when signed in
+          />
+          <Stack.Screen
+            name="Home_2"
+            component={MyDrawer}
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
