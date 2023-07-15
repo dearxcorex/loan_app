@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
-import { Card, Text } from "react-native-paper";
+import { Card, Text, Button, Avatar, IconButton } from "react-native-paper";
 import { HStack } from "@react-native-material/core";
-import { Dimensions, TouchableOpacity } from "react-native";
+import { Dimensions } from "react-native";
+import AwesomeIcon from "react-native-vector-icons/FontAwesome";
 import {
   CompositeNavigationProp,
   useNavigation,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { BalanceContext } from "./AuthContext/BalanceContext";
-
+import Chatcomponent from "./Chart";
+import { View, StyleSheet } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 const { width, height } = Dimensions.get("window");
 
@@ -30,18 +32,49 @@ const Balance: React.FC = () => {
     navigation.navigate("Details");
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 10,
+      marginTop: 10,
+    },
+    card: {
+      width: "60%",
+    },
+    buttton: {
+      width: "30%", // adjust this to set the width of the card
+      margin: 5,
+      alignSelf: "center",
+    },
+  });
+
   return (
     <>
-      <TouchableOpacity onPress={handlePress}>
-        <HStack m={4} spacing={3}>
-          <Card style={{ width: width * 0.4, height: height * 0.15 }}>
+      <HStack>
+        <View style={styles.container}>
+          <Card>
+            <Card.Title
+              title="Dearxoasis"
+              subtitle="Card Subtitle"
+              left={(props) => <AwesomeIcon {...props} name="home" />}
+              style={styles.card}
+            />
             <Card.Content>
-              <Text variant="titleLarge">dearxoasis</Text>
-              <Text variant="bodyMedium">${context.totalLoan}</Text>
+              <Button
+                mode="contained"
+                onPress={handlePress}
+                style={styles.buttton}
+              >
+                info
+              </Button>
             </Card.Content>
           </Card>
-        </HStack>
-      </TouchableOpacity>
+
+          <Chatcomponent />
+        </View>
+      </HStack>
     </>
   );
 };
