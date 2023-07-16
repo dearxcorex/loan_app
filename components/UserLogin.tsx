@@ -1,7 +1,7 @@
 import { app } from "../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
@@ -11,7 +11,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useAuth } from "./AuthContext/SetupContext";
 import { theme } from "../core/theme";
 import Background from "./Background";
-//import { emailValidator, passwordValidator } from "../core/utils";
+//email valid and password valid
 import { emailValidator, passwordValidator } from "../core/utils";
 type RootStackParamList = {
   Balance: undefined;
@@ -27,8 +27,16 @@ const Userlogin: React.FC = () => {
   const [password, setPassword] = useState({ value: "", error: "" });
 
   const onSubmit = async () => {
-    const firebaseApp = getAuth(app);
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value); //password validator
 
+    if (emailError || passwordError) {
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      return;
+    }
+
+    const firebaseApp = getAuth(app);
     await signInWithEmailAndPassword(firebaseApp, email.value, password.value)
       .then((userCredential) => {
         // Signed in
@@ -58,25 +66,38 @@ const Userlogin: React.FC = () => {
           label="Email"
           value={email.value}
           onChangeText={(email) => setEmail({ value: email, error: "" })}
+          error={!!email.error}
+          autoCapitalize="none"
+          autoComplete="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
         />
+        {email.error && <Text style={styles.error}>{email.error}</Text>}
         <TextInput
           label="Password"
           value={password.value}
           onChangeText={(password) =>
             setPassword({ value: password, error: "" })
           }
+          error={!!password.error}
           secureTextEntry
         />
+        {password.error && <Text style={styles.error}>{password.error}</Text>}
+        <View style={styles.forgotPassword}>
+          <TouchableOpacity>
+            <Text style={styles.label}>Forgot your password?</Text>
+          </TouchableOpacity>
+        </View>
         <Button mode="contained" onPress={onSubmit} style={styles.button}>
           Login
         </Button>
-        <Button
-          mode="contained"
-          onPress={handleRegisterPress}
-          style={styles.button}
-        >
-          Register
-        </Button>
+      </View>
+
+      <View style={styles.row}>
+        <Text style={styles.label}>Don’t have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text style={styles.link}>Sign up</Text>
+        </TouchableOpacity>
       </View>
     </Background>
   );
@@ -107,8 +128,10 @@ const styles = StyleSheet.create({
   },
   label: {
     color: theme.colors.secondary,
+    paddingTop: 4,
   },
   link: {
+    paddingTop: 4,
     fontWeight: "bold",
     color: theme.colors.primary,
   },

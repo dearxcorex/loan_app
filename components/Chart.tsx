@@ -11,10 +11,12 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase";
 import { Dimensions } from "react-native";
+import Balance from "./Balance";
 
 //get data from firebase and unique user id
 const Chart: React.FC = () => {
   const [barData, setBarData] = useState<any>([]);
+  const [loanValue, setLoanValue] = useState<number>(0);
 
   const fetchData = async () => {
     const user = getAuth(app).currentUser;
@@ -74,6 +76,7 @@ const Chart: React.FC = () => {
           backgroundColor={"rgb(233, 223, 235)"}
         />
       </View>
+      {/* <Balance loan={loanValue} /> */}
     </View>
   );
 };

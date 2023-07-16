@@ -57,7 +57,7 @@ const Balance: React.FC = () => {
           <Card>
             <Card.Title
               title="Dearxoasis"
-              subtitle="Card Subtitle"
+              // subtitle={`Balance: ${loan}`}
               left={(props) => <AwesomeIcon {...props} name="home" />}
               style={styles.card}
             />

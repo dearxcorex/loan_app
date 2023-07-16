@@ -116,8 +116,16 @@ const StackNavigator: React.FC<HeaderStyleProps> = () => {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="InputPage" component={InputPage} />
+        <Stack.Screen
+          name="Details"
+          component={DetailsScreen}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="InputPage"
+          component={InputPage}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </BalanceContext.Provider>
   );
@@ -132,7 +140,7 @@ const Mycomponent: React.FC = () => {
           <Stack.Screen
             name="Userlogin"
             component={UserLogin}
-            options={{ headerShown: !isSigedIn }} // Hide header when signed in
+            options={{ headerShown: isSigedIn }} // Hide header when signed in
           />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen
