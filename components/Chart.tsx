@@ -1,28 +1,33 @@
 import { View, StyleSheet } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { useEffect, useState } from "react";
-// firebasse
+import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   collection,
   getDocs,
-  onSnapshot,
+  query,
+  where,
 } from "firebase/firestore";
+import { app } from "../firebase";
 import { Dimensions } from "react-native";
 
+//get data from firebase and unique user id
 const Chart: React.FC = () => {
   const [barData, setBarData] = useState<any>([]);
 
-  // get data from firebase   and  set to barData
-  useEffect(() => {
-    let data: any = [];
-    const firestore = getFirestore();
-    const q = collection(firestore, "loans");
-
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      data = [];
+  const fetchData = async () => {
+    const user = getAuth(app).currentUser;
+    if (user) {
+      const firestore = getFirestore();
+      const q = query(
+        collection(firestore, "loans"),
+        where("userId", "==", user.uid)
+      );
+      const querySnapshot = await getDocs(q);
+      let data: any[] = [];
       querySnapshot.forEach((doc) => {
-        const docData = doc.data(); // get data from firebase
+        const docData = doc.data();
         const loan = docData.amount;
         const name = docData.name;
         data.push({
@@ -32,10 +37,14 @@ const Chart: React.FC = () => {
         });
       });
       setBarData(data);
-    });
+    } else {
+      console.log("User is not logged in");
+    }
+  };
 
-    return () => unsubscribe(); // Unsubscribe from changes when component is unmounted
-  }, []);
+  useEffect(() => {
+    fetchData();
+  }, [barData]);
 
   const styles = StyleSheet.create({
     container: {
@@ -46,23 +55,25 @@ const Chart: React.FC = () => {
       marginTop: 100,
     },
     chart: {
-      width: Dimensions.get("window").width, // full width
-      height: Dimensions.get("window").height, // full height
+      width: "100%",
+      height: 300,
     },
   });
 
   return (
     <View style={styles.container}>
-      <BarChart
-        data={barData}
-        barWidth={35}
-        noOfSections={3}
-        barBorderRadius={4}
-        frontColor={"lightgray"}
-        yAxisThickness={0}
-        xAxisThickness={0}
-        backgroundColor={"rgb(233, 223, 235)"}
-      />
+      <View style={styles.chart}>
+        <BarChart
+          data={barData}
+          barWidth={35}
+          noOfSections={3}
+          barBorderRadius={4}
+          frontColor={"lightgray"}
+          yAxisThickness={0}
+          xAxisThickness={0}
+          backgroundColor={"rgb(233, 223, 235)"}
+        />
+      </View>
     </View>
   );
 };

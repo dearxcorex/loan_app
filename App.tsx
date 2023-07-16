@@ -13,6 +13,7 @@ import { signOut, getAuth } from "firebase/auth";
 import Balance from "./components/Balance";
 import DetailsScreen from "./components/Details";
 import InputPage from "./components/Addbutton/inputPage";
+import Register from "./components/Register";
 import {
   DrawerContentComponentProps,
   createDrawerNavigator,
@@ -133,6 +134,7 @@ const Mycomponent: React.FC = () => {
             component={UserLogin}
             options={{ headerShown: !isSigedIn }} // Hide header when signed in
           />
+          <Stack.Screen name="Register" component={Register} />
           <Stack.Screen
             name="Home_2"
             component={MyDrawer}
