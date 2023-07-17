@@ -5,27 +5,34 @@ import { Button } from "react-native-paper";
 import Constants from "expo-constants";
 //firebase and Auth
 import { firestore, app } from "../firebase";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  UserCredential,
+} from "firebase/auth";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
 
-const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setname] = useState("");
+const Register: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setname] = useState<string>("");
 
   console.log(name);
   const onSubmit = async () => {
     const firebaseApp = getAuth(app);
     const firestore = getFirestore();
-    await createUserWithEmailAndPassword(firebaseApp, email, password)
-      .then(async (user) => {
-        let docRef = doc(collection(firestore, "users"), user.user.uid);
-        await setDoc(docRef, { name: name });
-        console.log("user is registered");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    const { user } = (await createUserWithEmailAndPassword(
+      firebaseApp,
+      email,
+      password
+    )) as UserCredential;
+    if (user) {
+      await updateProfile(user, { displayName: name });
+      const docRef = doc(firestore, "users", user.uid);
+      await setDoc(docRef, { name: name });
+      console.log("User created");
+    }
   };
 
   return (

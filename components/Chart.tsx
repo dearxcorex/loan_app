@@ -12,11 +12,15 @@ import {
 import { app } from "../firebase";
 import { Dimensions } from "react-native";
 import Balance from "./Balance";
+interface BarData {
+  value: number;
+  label: string;
+  frontColor: string;
+}
 
 //get data from firebase and unique user id
 const Chart: React.FC = () => {
-  const [barData, setBarData] = useState<any>([]);
-  const [loanValue, setLoanValue] = useState<number>(0);
+  const [barData, setBarData] = useState<BarData[]>([]);
 
   const fetchData = async () => {
     const user = getAuth(app).currentUser;
@@ -27,7 +31,7 @@ const Chart: React.FC = () => {
         where("userId", "==", user.uid)
       );
       const querySnapshot = await getDocs(q);
-      let data: any[] = [];
+      let data: BarData[] = [];
       querySnapshot.forEach((doc) => {
         const docData = doc.data();
         const loan = docData.amount;
@@ -76,7 +80,6 @@ const Chart: React.FC = () => {
           backgroundColor={"rgb(233, 223, 235)"}
         />
       </View>
-      {/* <Balance loan={loanValue} /> */}
     </View>
   );
 };
