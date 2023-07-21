@@ -150,6 +150,7 @@ const Mycomponent: React.FC = () => {
               headerShown: false,
             }}
           />
+          <Stack.Screen name="Balance" component={Balance} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

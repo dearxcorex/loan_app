@@ -3,6 +3,7 @@ import { TextInput } from "react-native-paper";
 import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import Constants from "expo-constants";
+import { useNavigation } from "@react-navigation/native";
 //firebase and Auth
 import { firestore, app } from "../firebase";
 import {
@@ -12,16 +13,21 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
-
+import { StackNavigationProp } from "@react-navigation/stack";
+import { CommonActions } from "@react-navigation/native";
+type RootStackParamList = {
+  Balance: undefined;
+};
 const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setname] = useState<string>("");
-
-  console.log(name);
+  const navigation =
+    useNavigation<StackNavigationProp<RootStackParamList, "Balance">>();
   const onSubmit = async () => {
     const firebaseApp = getAuth(app);
     const firestore = getFirestore();
+
     const { user } = (await createUserWithEmailAndPassword(
       firebaseApp,
       email,
@@ -32,6 +38,13 @@ const Register: React.FC = () => {
       const docRef = doc(firestore, "users", user.uid);
       await setDoc(docRef, { name: name });
       console.log("User created");
+      // navigation.navigate("Balance");
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Home_2" }],
+        })
+      );
     }
   };
 

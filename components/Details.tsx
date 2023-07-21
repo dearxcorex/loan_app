@@ -84,23 +84,28 @@ const Details = ({}) => {
 
   return (
     <>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title style={{ paddingRight: 20 }}>Name</DataTable.Title>
-          <DataTable.Title style={{ paddingRight: 100 }} numeric>
-            Money
-          </DataTable.Title>
+      <DataTable style={{ backgroundColor: "#f8f8f8" }}>
+        <DataTable.Header style={{ backgroundColor: "#ddd" }}>
+          <DataTable.Title>Name</DataTable.Title>
+          <DataTable.Title numeric>Money</DataTable.Title>
           <DataTable.Title>Date</DataTable.Title>
         </DataTable.Header>
 
-        {items.slice(from, to).map((item) => (
-          <DataTable.Row key={item.key} style={{ paddingBottom: 10 }}>
-            <DataTable.Cell>{item.name}</DataTable.Cell>
-            <DataTable.Cell numeric style={{ paddingRight: 100 }}>
+        {items.slice(from, to).map((item, index) => (
+          <DataTable.Row
+            key={item.key}
+            style={{
+              backgroundColor: index % 2 ? "#fff" : "#eee",
+              // padding: 10,
+            }}
+          >
+            <DataTable.Cell style={{ padding: 10 }}>{item.name}</DataTable.Cell>
+            <DataTable.Cell style={{ padding: 10 }} numeric>
               {item.loan}
             </DataTable.Cell>
             <DataTable.Cell
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              // style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{ padding: 10 }}
             >
               {item.loanDate}
             </DataTable.Cell>
@@ -122,6 +127,7 @@ const Details = ({}) => {
           onItemsPerPageChange={onItemsPerPageChange}
           showFastPaginationControls
           selectPageDropdownLabel={"Rows per page"}
+          style={{ backgroundColor: "#ddd", padding: 10 }}
         />
       </DataTable>
     </>

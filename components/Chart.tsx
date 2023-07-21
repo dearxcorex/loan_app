@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
@@ -21,6 +21,7 @@ interface BarData {
 //get data from firebase and unique user id
 const Chart: React.FC = () => {
   const [barData, setBarData] = useState<BarData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     const user = getAuth(app).currentUser;
@@ -43,6 +44,7 @@ const Chart: React.FC = () => {
         });
       });
       setBarData(data);
+      setLoading(false);
     } else {
       console.log("User is not logged in");
     }
@@ -65,21 +67,27 @@ const Chart: React.FC = () => {
       height: 300,
     },
   });
-
+  console.log(barData.length);
   return (
     <View style={styles.container}>
-      <View style={styles.chart}>
-        <BarChart
-          data={barData}
-          barWidth={35}
-          noOfSections={3}
-          barBorderRadius={4}
-          frontColor={"lightgray"}
-          yAxisThickness={0}
-          xAxisThickness={0}
-          backgroundColor={"rgb(233, 223, 235)"}
-        />
-      </View>
+      {loading ? (
+        <Text>Loading</Text>
+      ) : barData.length === 0 ? (
+        <Text>No data</Text>
+      ) : (
+        <View style={styles.chart}>
+          <BarChart
+            data={barData}
+            barWidth={35}
+            noOfSections={3}
+            barBorderRadius={4}
+            frontColor={"lightgray"}
+            yAxisThickness={0}
+            xAxisThickness={0}
+            backgroundColor={"rgb(233, 223, 235)"}
+          />
+        </View>
+      )}
     </View>
   );
 };

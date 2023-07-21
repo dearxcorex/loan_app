@@ -44,11 +44,11 @@ const Balance: React.FC = () => {
         collection(firestore, "loans"),
         where("userId", "==", user.uid)
       );
-      console.log("userName", user.displayName);
+      // console.log("userName", user.displayName);
 
       const querySnapshot = await getDocs(q);
       let data: LoanData[] = [];
-      console.log(data);
+      // console.log(data);
       querySnapshot.forEach((doc) => {
         const docData = doc.data();
         const loan = docData.amount;
@@ -93,7 +93,7 @@ const Balance: React.FC = () => {
       marginTop: 10,
     },
     card: {
-      width: "60%",
+      width: "70%",
     },
     buttton: {
       width: "30%", // adjust this to set the width of the card
@@ -109,7 +109,10 @@ const Balance: React.FC = () => {
           <Card>
             <Card.Title
               title={user ? user.displayName : "None"}
-              // subtitle={`Balance: ${loan}`}
+              subtitle={`Balance: ${loanData.reduce(
+                (acc, item) => acc + item.loan,
+                0
+              )}`}
               left={(props) => <AwesomeIcon {...props} name="home" />}
               style={styles.card}
             />
@@ -123,14 +126,14 @@ const Balance: React.FC = () => {
               </Button>
             </Card.Content>
           </Card>
-          <View>
+          {/* <View>
             <Text>Loan Data:</Text>
             {loanData.map((item, index) => (
               <Text key={index}>
                 Name: {item.name}, Loan: {item.loan}
               </Text>
             ))}
-          </View>
+          </View> */}
           <Chatcomponent />
         </View>
       </HStack>
