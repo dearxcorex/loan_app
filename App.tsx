@@ -14,6 +14,8 @@ import Balance from "./components/Balance";
 import DetailsScreen from "./components/Details";
 import InputPage from "./components/Addbutton/inputPage";
 import Register from "./components/Register";
+import ForgotPassword from "./components/ForgotPassword";
+
 import {
   DrawerContentComponentProps,
   createDrawerNavigator,
@@ -59,7 +61,6 @@ const DrawerContent: React.FC<DrawerContentComponentProps> = () => {
     navigation.reset({ index: 0, routes: [{ name: "Userlogin" }] });
   };
 
-  console.log("DrawerComponent");
   return (
     <View>
       <Drawer.Item
@@ -84,6 +85,11 @@ const MyDrawer: React.FC = () => {
         </View>
       )}
     >
+      {/* <DrawerNavigator.Screen
+        name="UserLogin"
+        component={UserLogin}
+        options={{ headerShown: false }}
+      /> */}
       <DrawerNavigator.Screen name="Home" component={StackNavigator} />
     </DrawerNavigator.Navigator>
   );
@@ -119,7 +125,7 @@ const StackNavigator: React.FC<HeaderStyleProps> = () => {
         <Stack.Screen
           name="Details"
           component={DetailsScreen}
-          // options={{ headerShown: false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="InputPage"
@@ -143,6 +149,7 @@ const Mycomponent: React.FC = () => {
             options={{ headerShown: isSigedIn }} // Hide header when signed in
           />
           <Stack.Screen name="Register" component={Register} />
+
           <Stack.Screen
             name="Home_2"
             component={MyDrawer}
@@ -150,6 +157,12 @@ const Mycomponent: React.FC = () => {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
+            options={{ headerShown: false }}
+          />
+
           <Stack.Screen name="Balance" component={Balance} />
         </Stack.Navigator>
       </NavigationContainer>

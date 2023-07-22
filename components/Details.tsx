@@ -11,17 +11,23 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { BalanceContext } from "./AuthContext/BalanceContext";
-import { StyleSheet, Text, View } from "react-native";
-import { set } from "react-native-reanimated";
+import Background from "./Background";
+import BackButton from "./BackButton";
+import { Navigation } from "./types";
 import { IconButton } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import Logo from "./Logo";
+import { StatusBar } from "expo-status-bar";
 interface Item {
   key: string;
   loanDate: string;
   name: string;
   loan: number;
 }
-
-const Details = ({}) => {
+type Props = {
+  navigation: Navigation;
+};
+const Details = ({ navigation }: Props) => {
   const [page, setPage] = useState<number>(0);
   const [numberOfItemsPerPageList] = useState<number[]>([2, 3, 4]);
   const [itemsPerPage, onItemsPerPageChange] = useState<number>(
@@ -83,11 +89,26 @@ const Details = ({}) => {
   };
 
   return (
-    <>
-      <DataTable style={{ backgroundColor: "#f8f8f8" }}>
-        <DataTable.Header style={{ backgroundColor: "#ddd" }}>
+    <Background>
+      <StatusBar style="auto" />
+      <Logo />
+      <View style={styles.backButton}>
+        <BackButton goBack={() => navigation.navigate("Balance")} />
+      </View>
+      <DataTable
+        style={{ flex: 1, marginTop: 100, backgroundColor: "#f8f8f8" }}
+      >
+        <DataTable.Header
+          style={{
+            backgroundColor: "#ddd",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 2,
+          }}
+        >
           <DataTable.Title>Name</DataTable.Title>
-          <DataTable.Title numeric>Money</DataTable.Title>
+          <DataTable.Title>Money</DataTable.Title>
           <DataTable.Title>Date</DataTable.Title>
         </DataTable.Header>
 
@@ -96,22 +117,20 @@ const Details = ({}) => {
             key={item.key}
             style={{
               backgroundColor: index % 2 ? "#fff" : "#eee",
-              // padding: 10,
+
+              paddingRight: 7,
             }}
           >
-            <DataTable.Cell style={{ padding: 10 }}>{item.name}</DataTable.Cell>
-            <DataTable.Cell style={{ padding: 10 }} numeric>
-              {item.loan}
-            </DataTable.Cell>
+            <DataTable.Cell style={{ padding: 2 }}>{item.name}</DataTable.Cell>
+            <DataTable.Cell style={{ padding: 2 }}>{item.loan}</DataTable.Cell>
             <DataTable.Cell
-              // style={{ flexDirection: "row", justifyContent: "space-between" }}
-              style={{ padding: 10 }}
+            // style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               {item.loanDate}
             </DataTable.Cell>
             <IconButton
               icon="delete"
-              size={20}
+              size={15}
               onPress={() => handleDelete(item.key)}
             />
           </DataTable.Row>
@@ -127,11 +146,23 @@ const Details = ({}) => {
           onItemsPerPageChange={onItemsPerPageChange}
           showFastPaginationControls
           selectPageDropdownLabel={"Rows per page"}
-          style={{ backgroundColor: "#ddd", padding: 10 }}
+          style={{
+            backgroundColor: "#ddd",
+            padding: 5,
+            marginTop: 5,
+          }}
         />
       </DataTable>
-    </>
+    </Background>
   );
 };
+
+const styles = StyleSheet.create({
+  backButton: {
+    position: "absolute",
+    top: -50,
+    left: 10,
+  },
+});
 
 export default Details;

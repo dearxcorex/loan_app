@@ -67,7 +67,7 @@ const Chart: React.FC = () => {
       height: 300,
     },
   });
-  console.log(barData.length);
+  // console.log(barData.length);
   return (
     <View style={styles.container}>
       {loading ? (
@@ -76,15 +76,33 @@ const Chart: React.FC = () => {
         <Text>No data</Text>
       ) : (
         <View style={styles.chart}>
+          <Text
+            style={{
+              color: "rgb(120, 69, 172)",
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              paddingBottom: 10,
+            }}
+          >
+            OverView
+          </Text>
           <BarChart
             data={barData}
-            barWidth={35}
+            barWidth={30}
+            spacing={10}
             noOfSections={3}
             barBorderRadius={4}
             frontColor={"lightgray"}
             yAxisThickness={0}
             xAxisThickness={0}
             backgroundColor={"rgb(233, 223, 235)"}
+            initialSpacing={10}
+            yAxisTextStyle={{ color: "#665A6F" }}
+            // xAxisTextStyle={{ color: "#665A6F" }}
+            roundedTop={true}
+            roundedBottom={true}
+            width={Dimensions.get("window").width - 50}
           />
         </View>
       )}

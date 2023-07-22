@@ -6,17 +6,20 @@ import { TextInput, Button } from "react-native-paper";
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Logo from "./Logo";
 
 //styles theme for the login page
 import { useAuth } from "./AuthContext/SetupContext";
 import { theme } from "../core/theme";
 import Background from "./Background";
+
 //email valid and password valid
 import { emailValidator, passwordValidator } from "../core/utils";
 type RootStackParamList = {
   Balance: undefined;
   Home_2: undefined;
   Register: undefined;
+  ForgotPassword: undefined;
 };
 type navigationProp = StackNavigationProp<RootStackParamList, "Balance">;
 
@@ -61,6 +64,7 @@ const Userlogin: React.FC = () => {
 
   return (
     <Background>
+      <Logo />
       <View style={styles.container}>
         <TextInput
           label="Email"
@@ -84,7 +88,9 @@ const Userlogin: React.FC = () => {
         />
         {password.error && <Text style={styles.error}>{password.error}</Text>}
         <View style={styles.forgotPassword}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
             <Text style={styles.label}>Forgot your password?</Text>
           </TouchableOpacity>
         </View>
