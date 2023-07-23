@@ -90,7 +90,7 @@ const Chart: React.FC = () => {
           <BarChart
             data={barData}
             barWidth={30}
-            spacing={10}
+            spacing={30}
             noOfSections={3}
             barBorderRadius={4}
             frontColor={"lightgray"}
@@ -99,7 +99,7 @@ const Chart: React.FC = () => {
             backgroundColor={"rgb(233, 223, 235)"}
             initialSpacing={10}
             yAxisTextStyle={{ color: "#665A6F" }}
-            // xAxisTextStyle={{ color: "#665A6F" }}
+            stepValue={1000}
             roundedTop={true}
             roundedBottom={true}
             width={Dimensions.get("window").width - 50}

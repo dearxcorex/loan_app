@@ -7,6 +7,7 @@ import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Logo from "./Logo";
+import { ActivityIndicator } from "react-native";
 
 //styles theme for the login page
 import { useAuth } from "./AuthContext/SetupContext";
@@ -15,6 +16,7 @@ import Background from "./Background";
 
 //email valid and password valid
 import { emailValidator, passwordValidator } from "../core/utils";
+import { set } from "react-native-reanimated";
 type RootStackParamList = {
   Balance: undefined;
   Home_2: undefined;
@@ -28,21 +30,22 @@ const Userlogin: React.FC = () => {
   const navigation = useNavigation<navigationProp>();
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
-
+  const [loading, setLoading] = useState(false);
   const onSubmit = async () => {
+    setLoading(true);
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value); //password validator
 
     if (emailError || passwordError) {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
+      setLoading(false);
       return;
     }
 
     const firebaseApp = getAuth(app);
     await signInWithEmailAndPassword(firebaseApp, email.value, password.value)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
         console.log(user);
         if (user) {
@@ -57,9 +60,6 @@ const Userlogin: React.FC = () => {
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
       });
-  };
-  const handleRegisterPress = () => {
-    navigation.navigate("Register");
   };
 
   return (
@@ -94,9 +94,13 @@ const Userlogin: React.FC = () => {
             <Text style={styles.label}>Forgot your password?</Text>
           </TouchableOpacity>
         </View>
-        <Button mode="contained" onPress={onSubmit} style={styles.button}>
-          Login
-        </Button>
+        {loading ? (
+          <ActivityIndicator size={"large"} color={"#0000ff"} />
+        ) : (
+          <Button mode="contained" onPress={onSubmit} style={styles.button}>
+            Login
+          </Button>
+        )}
       </View>
 
       <View style={styles.row}>

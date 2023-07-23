@@ -21,12 +21,17 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import BackButton from "./BackButton";
-import Logo from "./Logo";
 
 type RootStackParamList = {
   Balance: undefined;
   Details: undefined;
+};
+type LoanItem = {
+  loan: number;
+};
+
+const calculateTotal = (loanData: LoanItem[]) => {
+  return loanData.reduce((acc, item) => acc + item.loan, 0);
 };
 
 interface LoanData {
@@ -100,14 +105,22 @@ const Balance: React.FC = () => {
       width: "75%",
     },
     buttton: {
-      width: "100%", // adjust this to set the width of the card
+      width: "35%", // adjust this to set the width of the card
+      height: 40,
       margin: 5,
+
       alignSelf: "center",
     },
     chatContainer: {
       position: "absolute", // Change from "relative" to "absolute"
       bottom: 200, // Adjust this value to position the Chatcomponent properly
       zIndex: 1, // Set
+    },
+    balanceText: {
+      fontWeight: "bold",
+      fontSize: 18,
+      marginBottom: 10,
+      color: "green",
     },
   });
 
@@ -118,15 +131,18 @@ const Balance: React.FC = () => {
           <View style={styles.container}>
             <Card>
               <Card.Title
-                title={user ? user.displayName : "None"}
-                subtitle={`Balance: ${loanData.reduce(
-                  (acc, item) => acc + item.loan,
-                  0
-                )}`}
+                title={` Welcome! ${user ? user.displayName : "None"}`}
+                subtitle={`Balance: ${calculateTotal(loanData)}`}
                 left={(props) => <AwesomeIcon {...props} name="home" />}
                 style={styles.card}
               />
               <Card.Content>
+                <Text
+                  variant="bodyMedium"
+                  style={[styles.balanceText]}
+                >{`compound interest: ${
+                  calculateTotal(loanData) * 1.07
+                }`}</Text>
                 <Button
                   mode="contained"
                   onPress={handlePress}

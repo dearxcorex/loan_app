@@ -90,7 +90,7 @@ const MyDrawer: React.FC = () => {
         component={UserLogin}
         options={{ headerShown: false }}
       /> */}
-      <DrawerNavigator.Screen name="Home" component={StackNavigator} />
+      <DrawerNavigator.Screen name="LOAN!" component={StackNavigator} />
     </DrawerNavigator.Navigator>
   );
 };
