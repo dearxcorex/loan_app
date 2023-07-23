@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Text, Button, Avatar, IconButton } from "react-native-paper";
 import { HStack } from "@react-native-material/core";
 import { Dimensions } from "react-native";
@@ -19,6 +19,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+
 import { app } from "../firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 

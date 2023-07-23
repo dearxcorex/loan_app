@@ -22,6 +22,8 @@ interface BarData {
 const Chart: React.FC = () => {
   const [barData, setBarData] = useState<BarData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const maxValue = Math.max(...barData.map((item) => item.value));
+  const stepValue = Math.ceil(maxValue / 5); // Divide the maximum value by the number of sections
 
   const fetchData = async () => {
     const user = getAuth(app).currentUser;
@@ -99,7 +101,7 @@ const Chart: React.FC = () => {
             backgroundColor={"rgb(233, 223, 235)"}
             initialSpacing={10}
             yAxisTextStyle={{ color: "#665A6F" }}
-            stepValue={1000}
+            stepValue={stepValue}
             roundedTop={true}
             roundedBottom={true}
             width={Dimensions.get("window").width - 50}

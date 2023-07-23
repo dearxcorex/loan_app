@@ -4,6 +4,8 @@ import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import Logo from "./Logo";
+import Background from "./Background";
 //firebase and Auth
 import { firestore, app } from "../firebase";
 import {
@@ -50,15 +52,20 @@ const Register: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.logoContainer}>
+        <Logo />
+      </View>
       <TextInput
         style={styles.input}
         placeholder="name"
         onChangeText={setname}
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         placeholder="email"
         onChangeText={setEmail}
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
@@ -85,6 +92,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  logoContainer: {
+    position: "absolute", // positions the logo independently of other elements
+    top: 50, // sets the logo at the top
+    alignSelf: "center", // centers the logo on the screen
   },
   input: {
     borderWidth: 1,
