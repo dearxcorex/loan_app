@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   BalanceContext,
   BalanceContextProps,
@@ -52,14 +52,14 @@ interface HeaderStyleProps {
 const DrawerContent: React.FC<DrawerContentComponentProps> = () => {
   const navigation = useNavigation<InputPageNavigationProp>();
 
-  const handleAddPress = () => {
+  const handleAddPress = useCallback(() => {
     navigation.navigate("InputPage");
-  };
+  }, [navigation]);
 
-  const handleLogoutPress = async () => {
+  const handleLogoutPress = useCallback(async () => {
     await signOut(getAuth());
     navigation.reset({ index: 0, routes: [{ name: "Userlogin" }] });
-  };
+  }, [navigation]);
 
   return (
     <View>
@@ -85,11 +85,6 @@ const MyDrawer: React.FC = () => {
         </View>
       )}
     >
-      {/* <DrawerNavigator.Screen
-        name="UserLogin"
-        component={UserLogin}
-        options={{ headerShown: false }}
-      /> */}
       <DrawerNavigator.Screen name="LOAN!" component={StackNavigator} />
     </DrawerNavigator.Navigator>
   );
